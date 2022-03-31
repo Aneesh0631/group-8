@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/")
@@ -18,14 +19,31 @@ public class HelloWorldController {
         this.service = service;
     }
 
-    @GetMapping(path = "getValue")
-    public List<HelloWorld> getName() {
-        return service.getValue();
+    @GetMapping
+    public List<HelloWorld> getValues() {
+        return service.getValues();
     }
 
-    @PostMapping(path = "setValue")
-    public String setValue(@RequestBody String text){
-         return service.setValue(text);
-//        System.out.println("Function Called");
+
+    @GetMapping(value = "/{id}")
+    public Optional<HelloWorld> getValue(@PathVariable("id") Integer id) {
+        return service.getValue(id);
+    }
+
+    @PostMapping(value = "/{text}")
+    public String postValue(@PathVariable("text") String text){
+         return service.postValue(text);
+    }
+
+    @PutMapping(value = "/{id}")
+    public String putValues(@PathVariable("id") Integer id,@RequestBody(required = true) String text){
+        return service.putValue(id, text);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public String  deleteValue(@PathVariable("id") Integer id)
+    {
+        System.out.println("called");
+        return service.deleteValue(id);
     }
 }
